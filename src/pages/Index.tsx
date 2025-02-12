@@ -43,11 +43,11 @@ const metrics = [
 ];
 
 const languageData = [
-  { name: "Swahili", submissions: 2341 },
-  { name: "Bengali", submissions: 1876 },
-  { name: "Yoruba", submissions: 1654 },
-  { name: "Kurdish", submissions: 1432 },
-  { name: "Telugu", submissions: 1287 },
+  { name: "Swahili 🇹🇿", submissions: 2341 },
+  { name: "Bengali 🇧🇩", submissions: 1876 },
+  { name: "Yoruba 🇳🇬", submissions: 1654 },
+  { name: "Kurdish 🇮🇶", submissions: 1432 },
+  { name: "Telugu 🇮🇳", submissions: 1287 },
 ];
 
 const qualityData = [
@@ -76,6 +76,16 @@ const Index = () => {
   return (
     <DashboardLayout>
       <div className="space-y-8">
+        {/* Header Section */}
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
+            🎙️ Speak To Earn Data Commons
+          </h1>
+          <p className="text-gray-600 mt-2">
+            Preserving languages, empowering voices, building AI for everyone
+          </p>
+        </div>
+
         {/* Metrics Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {metrics.map((metric) => (
@@ -86,24 +96,44 @@ const Index = () => {
         {/* Charts Section */}
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
           {/* Language Distribution */}
-          <Card className="col-span-3 p-6">
-            <h3 className="text-lg font-semibold mb-4">Language Distribution</h3>
+          <Card className="col-span-3 p-6 glass-card">
+            <h3 className="text-lg font-semibold mb-4 flex items-center">
+              <Globe2 className="w-5 h-5 mr-2 text-primary" />
+              Language Distribution
+            </h3>
             <div className="h-[300px]">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={languageData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" />
-                  <YAxis />
-                  <Tooltip />
-                  <Bar dataKey="submissions" fill="#8884d8" />
+                  <CartesianGrid strokeDasharray="3 3" opacity={0.1} />
+                  <XAxis 
+                    dataKey="name" 
+                    tick={{ fill: '#666', fontSize: 12 }}
+                    interval={0}
+                  />
+                  <YAxis tick={{ fill: '#666' }} />
+                  <Tooltip 
+                    contentStyle={{ 
+                      background: 'rgba(255, 255, 255, 0.9)',
+                      border: '1px solid #ddd',
+                      borderRadius: '8px'
+                    }}
+                  />
+                  <Bar 
+                    dataKey="submissions" 
+                    fill="#8884d8"
+                    radius={[4, 4, 0, 0]}
+                  />
                 </BarChart>
               </ResponsiveContainer>
             </div>
           </Card>
 
           {/* Quality Metrics */}
-          <Card className="col-span-2 p-6">
-            <h3 className="text-lg font-semibold mb-4">Quality Metrics</h3>
+          <Card className="col-span-2 p-6 glass-card">
+            <h3 className="text-lg font-semibold mb-4 flex items-center">
+              <TrendingUpIcon className="w-5 h-5 mr-2 text-primary" />
+              Quality Metrics
+            </h3>
             <div className="h-[300px]">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
@@ -120,7 +150,13 @@ const Index = () => {
                       <Cell key={`cell-${index}`} fill={entry.color} />
                     ))}
                   </Pie>
-                  <Tooltip />
+                  <Tooltip 
+                    contentStyle={{ 
+                      background: 'rgba(255, 255, 255, 0.9)',
+                      border: '1px solid #ddd',
+                      borderRadius: '8px'
+                    }}
+                  />
                 </PieChart>
               </ResponsiveContainer>
               <div className="flex justify-center space-x-4 mt-4">
@@ -138,6 +174,11 @@ const Index = () => {
               </div>
             </div>
           </Card>
+        </div>
+
+        {/* Tagline Footer */}
+        <div className="text-center text-sm text-gray-500 mt-8">
+          "If you can speak, you can earn" 💰
         </div>
       </div>
     </DashboardLayout>
