@@ -1,4 +1,3 @@
-
 import { DashboardLayout } from "@/components/dashboard/DashboardLayout";
 import { Card } from "@/components/ui/card";
 import {
@@ -70,6 +69,61 @@ const MetricCard = ({ metric }: { metric: typeof metrics[0] }) => (
       <metric.icon className="w-8 h-8 text-gray-400" />
     </div>
   </Card>
+);
+
+const activityFeed = [
+  { id: 1, type: "submission", user: "Sarah M.", language: "Swahili", time: "2m ago" },
+  { id: 2, type: "verification", user: "Ahmed K.", language: "Kurdish", time: "5m ago" },
+  { id: 3, type: "payout", user: "Raj P.", amount: "$24.50", time: "15m ago" },
+  { id: 4, type: "new_language", language: "Hausa", time: "1h ago" },
+];
+
+const economicMetrics = [
+  { label: "Average Earnings", value: "$14.72", change: "+2.1%" },
+  { label: "Top Earner", value: "$342", change: "+12%" },
+  { label: "Today's Payouts", value: "$873", change: "+8%" },
+];
+
+const dataCommonsStats = [
+  { label: "Audio Hours", value: "487", icon: "🎙️", change: "+12" },
+  { label: "Translations", value: "12,467", icon: "📝", change: "+156" },
+  { label: "Words Captured", value: "89,234", icon: "💭", change: "+1,234" },
+  { label: "Weekly Growth", value: "+24%", icon: "📈", change: "+2.3%" },
+];
+
+const DataStatsCard = ({ stat }: { stat: typeof dataCommonsStats[0] }) => (
+  <Card className="p-6 hover:shadow-lg transition-shadow duration-300 glass-card">
+    <div className="flex items-center justify-between">
+      <div>
+        <div className="flex items-center space-x-2">
+          <span className="text-2xl">{stat.icon}</span>
+          <p className="text-sm text-gray-600">{stat.label}</p>
+        </div>
+        <h3 className="text-2xl font-bold mt-2">{stat.value}</h3>
+      </div>
+      <div className="text-success flex items-center">
+        <ArrowUpIcon className="w-4 h-4 mr-1" />
+        <span className="text-sm">{stat.change}</span>
+      </div>
+    </div>
+  </Card>
+);
+
+const ActivityCard = ({ activity }: { activity: typeof activityFeed[0] }) => (
+  <div className="flex items-center space-x-3 p-3 hover:bg-gray-50 rounded-lg transition-colors">
+    <div className="w-2 h-2 rounded-full bg-primary"></div>
+    <div className="flex-1">
+      {'user' in activity && <span className="font-medium">{activity.user}</span>}
+      {' '}
+      {activity.type === 'submission' && 'submitted new audio in'}
+      {activity.type === 'verification' && 'verified content in'}
+      {activity.type === 'payout' && `received ${activity.amount}`}
+      {activity.type === 'new_language' && `added new language:`}
+      {' '}
+      {'language' in activity && <span className="font-medium">{activity.language}</span>}
+    </div>
+    <span className="text-sm text-gray-500">{activity.time}</span>
+  </div>
 );
 
 const Index = () => {
@@ -174,6 +228,48 @@ const Index = () => {
               </div>
             </div>
           </Card>
+        </div>
+
+        {/* Activity Dashboard */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Recent Activity Feed */}
+          <Card className="p-6 glass-card">
+            <h3 className="text-lg font-semibold mb-4 flex items-center">
+              <TrendingUpIcon className="w-5 h-5 mr-2 text-primary" />
+              Recent Activity
+            </h3>
+            <div className="space-y-2">
+              {activityFeed.map((activity) => (
+                <ActivityCard key={activity.id} activity={activity} />
+              ))}
+            </div>
+          </Card>
+
+          {/* Economic Impact */}
+          <Card className="p-6 glass-card">
+            <h3 className="text-lg font-semibold mb-4 flex items-center">
+              <Coins className="w-5 h-5 mr-2 text-primary" />
+              Economic Impact
+            </h3>
+            <div className="space-y-4">
+              {economicMetrics.map((metric) => (
+                <div key={metric.label} className="flex justify-between items-center">
+                  <span className="text-gray-600">{metric.label}</span>
+                  <div className="flex items-center space-x-2">
+                    <span className="font-bold">{metric.value}</span>
+                    <span className="text-success text-sm">{metric.change}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Card>
+        </div>
+
+        {/* Data Commons Stats */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {dataCommonsStats.map((stat) => (
+            <DataStatsCard key={stat.label} stat={stat} />
+          ))}
         </div>
 
         {/* Tagline Footer */}
