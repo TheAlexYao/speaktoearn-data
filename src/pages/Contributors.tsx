@@ -1,8 +1,9 @@
-
 import { DashboardLayout } from "@/components/dashboard/DashboardLayout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Award, Globe, Mic, ScrollText, Star, Users } from "lucide-react";
+import { Award, Globe, Mic, ScrollText, Star, Users, Search, SortAsc } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { useState } from "react";
 
 const LanguageCard = ({ language }: { language: any }) => (
   <Card>
@@ -224,7 +225,87 @@ const taskCategories = [
   }
 ];
 
+const allContributors = [
+  {
+    name: "Sarah M.",
+    language: "Swahili",
+    submissions: 347,
+    acceptanceRate: "94%",
+    earned: "924 cUSD",
+    speciality: "Voice recordings",
+    joined: "3 months ago",
+    image: "",
+    level: "Expert"
+  },
+  {
+    name: "Rahul P.",
+    language: "Bengali",
+    submissions: 289,
+    acceptanceRate: "91%",
+    earned: "842 cUSD",
+    speciality: "Translations",
+    joined: "6 months ago",
+    image: "",
+    level: "Master"
+  },
+  {
+    name: "Ade O.",
+    language: "Yoruba",
+    submissions: 263,
+    acceptanceRate: "88%",
+    earned: "687 cUSD",
+    speciality: "Voice + Translation",
+    joined: "2 months ago",
+    image: "",
+    level: "Expert"
+  },
+  {
+    name: "Maria G.",
+    language: "Spanish",
+    submissions: 187,
+    acceptanceRate: "92%",
+    earned: "543 cUSD",
+    speciality: "Voice recordings",
+    joined: "4 months ago",
+    image: "",
+    level: "Regular"
+  },
+  {
+    name: "Chen W.",
+    language: "Mandarin",
+    submissions: 156,
+    acceptanceRate: "89%",
+    earned: "467 cUSD",
+    speciality: "Translations",
+    joined: "5 months ago",
+    image: "",
+    level: "Regular"
+  }
+];
+
 const Contributors = () => {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [sortBy, setSortBy] = useState<"submissions" | "earned">("submissions");
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
+
+  const filteredAndSortedContributors = allContributors
+    .filter(contributor => 
+      contributor.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      contributor.language.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      contributor.speciality.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+    .sort((a, b) => {
+      if (sortBy === "submissions") {
+        return sortOrder === "desc" 
+          ? b.submissions - a.submissions 
+          : a.submissions - b.submissions;
+      } else {
+        const aEarned = parseInt(a.earned);
+        const bEarned = parseInt(b.earned);
+        return sortOrder === "desc" ? bEarned - aEarned : aEarned - bEarned;
+      }
+    });
+
   return (
     <DashboardLayout>
       <div className="space-y-8">
@@ -238,11 +319,46 @@ const Contributors = () => {
         <ContributorStats />
 
         <div className="space-y-6">
-          <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-semibold">Top Contributors</h2>
+          <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between">
+            <div className="flex-1 w-full md:w-auto">
+              <Input
+                placeholder="Search contributors..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="max-w-sm"
+                prefix={<Search className="w-4 h-4 text-gray-400" />}
+              />
+            </div>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setSortBy("submissions")}
+                className={`px-3 py-1 rounded-md text-sm flex items-center gap-1 ${
+                  sortBy === "submissions" ? "bg-primary text-white" : "bg-gray-100"
+                }`}
+              >
+                Submissions
+                <SortAsc className="w-4 h-4" />
+              </button>
+              <button
+                onClick={() => setSortBy("earned")}
+                className={`px-3 py-1 rounded-md text-sm flex items-center gap-1 ${
+                  sortBy === "earned" ? "bg-primary text-white" : "bg-gray-100"
+                }`}
+              >
+                Earnings
+                <SortAsc className="w-4 h-4" />
+              </button>
+              <button
+                onClick={() => setSortOrder(prev => prev === "asc" ? "desc" : "asc")}
+                className="px-3 py-1 rounded-md text-sm bg-gray-100"
+              >
+                {sortOrder === "asc" ? "↑" : "↓"}
+              </button>
+            </div>
           </div>
+
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {recentContributors.map((contributor, index) => (
+            {filteredAndSortedContributors.map((contributor, index) => (
               <ContributorCard key={index} contributor={contributor} />
             ))}
           </div>
