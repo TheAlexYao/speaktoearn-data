@@ -1,3 +1,4 @@
+
 import { DashboardLayout } from "@/components/dashboard/DashboardLayout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -320,13 +321,13 @@ const Contributors = () => {
 
         <div className="space-y-6">
           <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between">
-            <div className="flex-1 w-full md:w-auto">
+            <div className="flex-1 w-full md:w-auto relative max-w-sm">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
               <Input
                 placeholder="Search contributors..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="max-w-sm"
-                prefix={<Search className="w-4 h-4 text-gray-400" />}
+                className="pl-10"
               />
             </div>
             <div className="flex items-center gap-2">
