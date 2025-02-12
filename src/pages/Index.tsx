@@ -13,6 +13,7 @@ import {
   Cell,
 } from "recharts";
 import { ArrowUpIcon, TrendingUpIcon, Users, Globe2, Coins } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const metrics = [
   {
@@ -53,6 +54,37 @@ const qualityData = [
   { name: "Excellent", value: 34, color: "#22C55E" },
   { name: "Good", value: 42, color: "#EAB308" },
   { name: "Needs Review", value: 24, color: "#F97316" },
+];
+
+const activeContributors = [
+  {
+    name: "Sarah M.",
+    contributions: 47,
+    language: "Swahili",
+    avatar: "",
+    lastActive: "2h ago"
+  },
+  {
+    name: "Ahmed K.",
+    contributions: 89,
+    language: "Bengali",
+    avatar: "",
+    lastActive: "1h ago"
+  },
+  {
+    name: "Priya R.",
+    contributions: 63,
+    language: "Telugu",
+    avatar: "",
+    lastActive: "Just now"
+  },
+  {
+    name: "John D.",
+    contributions: 35,
+    language: "Kurdish",
+    avatar: "",
+    lastActive: "5h ago"
+  }
 ];
 
 const MetricCard = ({ metric }: { metric: typeof metrics[0] }) => (
@@ -124,6 +156,29 @@ const ActivityCard = ({ activity }: { activity: typeof activityFeed[0] }) => (
     </div>
     <span className="text-sm text-gray-500">{activity.time}</span>
   </div>
+);
+
+const ContributorCard = ({ contributor }: { contributor: typeof activeContributors[0] }) => (
+  <Card className="hover:shadow-lg transition-shadow duration-200">
+    <div className="p-4 flex items-center space-x-4">
+      <Avatar className="h-10 w-10">
+        <AvatarImage src={contributor.avatar} />
+        <AvatarFallback>{contributor.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+      </Avatar>
+      <div className="flex-1">
+        <div className="flex justify-between items-start">
+          <div>
+            <h3 className="font-medium">{contributor.name}</h3>
+            <p className="text-sm text-muted-foreground">{contributor.language}</p>
+          </div>
+          <span className="text-xs text-muted-foreground">{contributor.lastActive}</span>
+        </div>
+        <div className="mt-1 flex items-center text-sm">
+          <span className="text-primary">{contributor.contributions} contributions</span>
+        </div>
+      </div>
+    </div>
+  </Card>
 );
 
 const Index = () => {
@@ -230,6 +285,27 @@ const Index = () => {
               </div>
             </div>
           </Card>
+        </div>
+
+        {/* Active Contributors Section */}
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <h2 className="text-2xl font-semibold flex items-center gap-2">
+              <Users className="h-6 w-6 text-primary" />
+              Active Contributors
+            </h2>
+            <button 
+              onClick={() => window.location.href = '/contributors'}
+              className="text-sm text-primary hover:underline"
+            >
+              View all contributors →
+            </button>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {activeContributors.map((contributor, index) => (
+              <ContributorCard key={index} contributor={contributor} />
+            ))}
+          </div>
         </div>
 
         {/* Activity Dashboard */}
