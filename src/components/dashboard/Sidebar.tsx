@@ -8,6 +8,7 @@ import {
   Settings,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Link } from "react-router-dom";
 
 const menuItems = [
   { icon: LayoutDashboard, label: "Overview", path: "/" },
@@ -40,9 +41,9 @@ export const Sidebar = () => {
         
         <nav className="flex-1 px-4">
           {menuItems.map((item) => (
-            <a
+            <Link
               key={item.label}
-              href={item.path}
+              to={item.path}
               className="flex items-center space-x-3 px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors mb-1"
             >
               <item.icon className="w-5 h-5" />
@@ -52,7 +53,7 @@ export const Sidebar = () => {
               )}>
                 {item.label}
               </span>
-            </a>
+            </Link>
           ))}
         </nav>
 
@@ -68,3 +69,4 @@ export const Sidebar = () => {
     </div>
   );
 };
+
